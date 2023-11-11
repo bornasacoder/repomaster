@@ -79,10 +79,10 @@ $db['default'] = array(
 	// For LocalHost
 	'hostname' => 'localhost',
 	'username' => 'root',
-	'password' => '',
+	'password' => 'password',
 //	'database' => 'swimrank_esp',
 	'database' => 'freedomcell',
-	'port'     => 8111, 
+	'port'     => 3306, 
 
 
 	'dbdriver' => 'mysqli',
