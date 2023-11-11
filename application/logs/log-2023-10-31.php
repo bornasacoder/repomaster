@@ -1,0 +1,6 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2023-10-31 21:16:23 --> Severity: Warning --> file_get_contents(http://52.66.202.69:7000/api/eth/create_wallet): Failed to open stream: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond C:\xampp\htdocs\backend\application\controllers\api\Users.php 575
+ERROR - 2023-10-31 21:16:23 --> Severity: Warning --> Trying to access array offset on value of type null C:\xampp\htdocs\backend\application\controllers\api\Users.php 577
+ERROR - 2023-10-31 21:49:14 --> Severity: Warning --> file_get_contents(http://52.66.202.69:7000/api/eth/create_wallet): Failed to open stream: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond C:\xampp\htdocs\backend\application\controllers\api\Users.php 575
+ERROR - 2023-10-31 21:49:14 --> Severity: Warning --> Trying to access array offset on value of type null C:\xampp\htdocs\backend\application\controllers\api\Users.php 577
