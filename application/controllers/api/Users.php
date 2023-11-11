@@ -2,7 +2,7 @@
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: GET, OPTIONS");
 defined('BASEPATH') OR exit('No direct script access allowed');
-$GLOBALS['url'] = 'http://localhost/backend/';
+$GLOBALS['url'] = 'https://api.victus.club/';
 $GLOBALS['app_url'] = '';
 $GLOBALS['ipfs_url'] = 'https://ipfs.io/ipfs/';
 //$GLOBALS['url'] = 'https://espsofttechnologies.com/freedomcell/';
