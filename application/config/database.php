@@ -82,7 +82,7 @@ $db['default'] = array(
 	'password' => 'password',
 //	'database' => 'swimrank_esp',
 	'database' => 'freedomcell',
-	'port'     => 3306, 
+	'port'     => 8111, 
 
 
 	'dbdriver' => 'mysqli',

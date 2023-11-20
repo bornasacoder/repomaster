@@ -278,7 +278,6 @@ public function update_balance_get(){
               $query="select * from users_wallet";
               $wallet=$this->common_model->getArrayByQuery($query);             
               foreach ($wallet as $value) {
-
               $from=$value['public_key'];
               $private=$value['private_key'];
               $balance=$this->get_balance($from,"0xffEfc73c8edc2bfbe3916b13f5E21c81d1Ce25ff");
@@ -287,7 +286,6 @@ public function update_balance_get(){
               $updateArr = array('balance' => $balance);
               $condition = array('id' => $value['id']);
               $this->common_model->updateRecords("users_wallet", $updateArr,$condition);   
-
               }
               echo "wallet updated";
 }
@@ -599,105 +597,204 @@ public function test_post(){
   //           $this->response($resp);
   // }
 
-  public function register_post() {
-    $this->load->library('GoogleAuthenticator');
-    $ga = new GoogleAuthenticator();
-    $secret = $ga->createSecret();
+//   public function register_post() {
+//     $this->load->library('GoogleAuthenticator');
+//     $ga = new GoogleAuthenticator();
+//     $secret = $ga->createSecret();
 
-    /* Get JSON data from the request */
-    $json_data = $this->input->raw_input_stream;
-    $data = json_decode($json_data, true);
+//     /* Get JSON data from the request */
+//     $json_data = $this->input->raw_input_stream;
+//     $data = json_decode($json_data, true);
 
-    /* Validate required parameters */
-    $required_parameters = ['full_name', 'email', 'password', 'confirm_password'];
-    foreach ($required_parameters as $param) {
-        if (empty($data[$param])) {
-            $resp = ['code' => false, 'message' => 'Missing required parameter: ' . $param];
-            $this->response($resp);
-        }
-    }
+//     /* Validate required parameters */
+//     $required_parameters = ['full_name', 'email', 'password', 'confirm_password'];
+//     foreach ($required_parameters as $param) {
+//         if (empty($data[$param])) {
+//             $resp = ['code' => false, 'message' => 'Missing required parameter: ' . $param];
+//             $this->response($resp);
+//         }
+//     }
 
-    /* Check if password and confirm_password match */
-    if ($data['password'] !== $data['confirm_password']) {
-        $resp = ['code' => false, 'message' => 'Password and confirm password do not match'];
-        $this->response($resp);
-    }
+//     /* Check if password and confirm_password match */
+//     if ($data['password'] !== $data['confirm_password']) {
+//         $resp = ['code' => false, 'message' => 'Password and confirm password do not match'];
+//         $this->response($resp);
+//     }
 
-    /* Check if email already exists */
-    $check_email = $this->common_model->getRecordCount("users", ['email' => $data['email']]);
-    if ($check_email > 0) {
-        $resp = ['code' => false, 'message' => 'Email is already registered'];
-        $this->response($resp);
-    }
+//     /* Check if email already exists */
+//     $check_email = $this->common_model->getRecordCount("users", ['email' => $data['email']]);
+//     if ($check_email > 0) {
+//         $resp = ['code' => false, 'message' => 'Email is already registered'];
+//         $this->response($resp);
+//     }
 
-    /* Generate email verification code and referral code */
-    $email_auth_code = md5(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 10));
-    $referral_code = strtoupper(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 8));
+//     /* Generate email verification code and referral code */
+//     $email_auth_code = md5(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 10));
+//     $referral_code = strtoupper(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 8));
 
-    /* Check and process referral code */
-    $referred_by = "";
-    if (!empty($data['referral_code'])) {
-        $check_ref = $this->common_model->getRecordCount("users", ['referral_code' => $data['referral_code']]);
-        if ($check_ref > 0) {
-            $referred_by = $data['referral_code'];
-        } else {
-            $resp = ['code' => false, 'message' => 'Invalid referral code'];
-            $this->response($resp);
-        }
-    }
+//     /* Check and process referral code */
+//     $referred_by = "";
+//     if (!empty($data['referral_code'])) {
+//         $check_ref = $this->common_model->getRecordCount("users", ['referral_code' => $data['referral_code']]);
+//         if ($check_ref > 0) {
+//             $referred_by = $data['referral_code'];
+//         } else {
+//             $resp = ['code' => false, 'message' => 'Invalid referral code'];
+//             $this->response($resp);
+//         }
+//     }
 
-    /* Prepare user data for insertion */
-    $user_data = [
-        'email' => $data['email'],
-        'referral_code' => $referral_code,
-        'referred_by' => $referred_by,
-        'email_auth_code' => $email_auth_code,
-        'password' => md5($data['password']),
-        'full_name' => $data['full_name'],
-        'google_auth_code' => $secret,
-        'ip' => $_SERVER['REMOTE_ADDR']
-    ];
+//     /* Prepare user data for insertion */
+//     $user_data = [
+//         'email' => $data['email'],
+//         'referral_code' => $referral_code,
+//         'referred_by' => $referred_by,
+//         'email_auth_code' => $email_auth_code,
+//         'password' => md5($data['password']),
+//         'full_name' => $data['full_name'],
+//         'google_auth_code' => $secret,
+//         'email_verify' => 1
+//         'userstatusid' => 1
+//         'ip' => $_SERVER['REMOTE_ADDR']
+//     ];
 
-    /* Insert user data into the database */
-    $user_id = $this->common_model->addRecords("users", $user_data);
-    if ($user_id) {
-        /* Prepare data for user plan insertion */
-        $user_plan_data = [
-            'user_id' => $user_id,
-            'plan_id' => 1,
-            'start_date' => date('Y-m-d'),
-            'ip' => $_SERVER['REMOTE_ADDR']
-        ];
-        $this->common_model->addRecords("user_plan", $user_plan_data);
+//     /* Insert user data into the database */
+//     $user_id = $this->common_model->addRecords("users", $user_data);
+//     if ($user_id) {
+//         /* Prepare data for user plan insertion */
+//         $user_plan_data = [
+//             'user_id' => $user_id,
+//             'plan_id' => 1,
+//             'start_date' => date('Y-m-d'),
+//             'ip' => $_SERVER['REMOTE_ADDR']
+//         ];
+//         $this->common_model->addRecords("user_plan", $user_plan_data);
 
-        /* Send email verification link to the user */
-        $to_email = $data['email'];
-        $subject = "Verify your email";
-        $verification_link = base_url("profilesetup?code=" . $email_auth_code); // Adjust the URL as needed
-        $msg = "Dear User, to complete your Freedomcells registration process, please verify your email by following this link: $verification_link";
-        $this->email_confirmation($to_email, $subject, $msg);
+//         /* Send email verification link to the user */
+//         $to_email = $data['email'];
+//         $subject = "Verify your email";
+//         $verification_link = base_url("profilesetup?code=" . $email_auth_code); // Adjust the URL as needed
+//         $msg = "Dear User, to complete your Freedomcells registration process, please verify your email by following this link: $verification_link";
+//         $this->email_confirmation($to_email, $subject, $msg);
 
-        /* Attempt to create wallet */
-        $wallet_creation_result = $this->createWallet($user_id);
-        if (!$wallet_creation_result['code'] === true) {
-            /* Get user data and send the response */
-            $user_data = $this->common_model->getUserProfile("WHERE u.id=$user_id", "");
-            $resp = ['code' => true, 'message' => 'Please follow the link sent to your registered email to verify your email address!', 'user_data' => $user_data[0]];
-        } else {
-            /* Handle wallet creation failure */
-            $resp = ['code' => false, 'message' => 'Failed to create wallet. Please try again later.'];
-        }
-    } else {
-        /* Handle user registration failure */
-        $resp = ['code' => false, 'message' => 'Some error occurred, please try again.'];
-    }
+//         /* Attempt to create wallet */
+//         $wallet_creation_result = $this->createWallet($user_id);
+//         if (!$wallet_creation_result['code'] === true) {
+//             /* Get user data and send the response */
+//             $user_data = $this->common_model->getUserProfile("WHERE u.id=$user_id", "");
+//             $resp = ['code' => true, 'message' => 'Please follow the link sent to your registered email to verify your email address!', 'user_data' => $user_data[0]];
+//         } else {
+//             /* Handle wallet creation failure */
+//             $resp = ['code' => false, 'message' => 'Failed to create wallet. Please try again later.'];
+//         }
+//     } else {
+//         /* Handle user registration failure */
+//         $resp = ['code' => false, 'message' => 'Some error occurred, please try again.'];
+//     }
 
-    $this->response($resp);
+//     $this->response($resp);
+// }
+public function register_post() {
+  $this->load->library('GoogleAuthenticator');
+  $ga = new GoogleAuthenticator();
+  $secret = $ga->createSecret();
+
+  /* Get JSON data from the request */
+  $json_data = $this->input->raw_input_stream;
+  $data = json_decode($json_data, true);
+
+  /* Validate required parameters */
+  $required_parameters = ['full_name', 'email', 'password', 'confirm_password'];
+  foreach ($required_parameters as $param) {
+      if (empty($data[$param])) {
+          $resp = ['code' => false, 'message' => 'Missing required parameter: ' . $param];
+          $this->response($resp);
+      }
+  }
+
+  /* Check if password and confirm_password match */
+  if ($data['password'] !== $data['confirm_password']) {
+      $resp = ['code' => false, 'message' => 'Password and confirm password do not match'];
+      $this->response($resp);
+  }
+
+  /* Check if email already exists */
+  $check_email = $this->common_model->getRecordCount("users", ['email' => $data['email']]);
+  if ($check_email > 0) {
+      $resp = ['code' => false, 'message' => 'Email is already registered'];
+      $this->response($resp);
+  }
+
+  /* Generate email verification code and referral code */
+  $email_auth_code = md5(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 10));
+  $referral_code = strtoupper(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 8));
+
+  /* Check and process referral code */
+  $referred_by = "";
+  if (!empty($data['referral_code'])) {
+      $check_ref = $this->common_model->getRecordCount("users", ['referral_code' => $data['referral_code']]);
+      if ($check_ref > 0) {
+          $referred_by = $data['referral_code'];
+      } else {
+          $resp = ['code' => false, 'message' => 'Invalid referral code'];
+          $this->response($resp);
+      }
+  }
+
+  /* Prepare user data for insertion */
+  $user_data = [
+      'email' => $data['email'],
+      'referral_code' => $referral_code,
+      'referred_by' => $referred_by,
+      'email_auth_code' => $email_auth_code,
+      'password' => md5($data['password']),
+      'full_name' => $data['full_name'],
+      'google_auth_code' => $secret,
+      'email_verify' => 1,
+      'userstatusid' => 1,
+      'ip' => $_SERVER['REMOTE_ADDR']
+  ];
+
+  /* Insert user data into the database */
+  $user_id = $this->common_model->addRecords("users", $user_data);
+  if ($user_id) {
+      /* Prepare data for user plan insertion */
+      $user_plan_data = [
+          'user_id' => $user_id,
+          'plan_id' => 1,
+          'start_date' => date('Y-m-d'),
+          'ip' => $_SERVER['REMOTE_ADDR']
+      ];
+      $this->common_model->addRecords("user_plan", $user_plan_data);
+
+      /* Send email verification link to the user */
+      $to_email = $data['email'];
+      $subject = "Verify your email";
+      $verification_link = base_url("profilesetup?code=" . $email_auth_code); // Adjust the URL as needed
+      $msg = "Dear User, to complete your Freedomcells registration process, please verify your email by following this link: $verification_link";
+      $this->email_confirmation($to_email, $subject, $msg);
+
+      /* Attempt to create wallet */
+      $wallet_creation_result = $this->createWallet($user_id);
+      if ($wallet_creation_result['code'] === true) {
+          /* Get user data and send the response */
+          $user_data = $this->common_model->getUserProfile("WHERE u.id=$user_id", "");
+          $resp = ['code' => true, 'message' => 'Please follow the link sent to your registered email to verify your email address!', 'user_data' => $user_data[0]];
+      } else {
+          /* Handle wallet creation failure */
+          $resp = ['code' => false, 'message' => 'Failed to create wallet. Please try again later.'];
+      }
+  } else {
+      /* Handle user registration failure */
+      $resp = ['code' => false, 'message' => 'Some error occurred, please try again.'];
+  }
+
+  $this->response($resp);
 }
 
 private function createWallet($user_id) {
-    $eth_wallet_url = 'http://52.66.202.69:7000/api/eth/create_wallet';
-    $btc_wallet_url = 'http://52.66.202.69:7000/api/btc/create_wallet';
+    $eth_wallet_url = 'https://walletconnect.com';
+    $btc_wallet_url = 'https://walletconnect.com';
 
     $eth_wallet_data = json_decode(@file_get_contents($eth_wallet_url), true);
     if ($eth_wallet_data['code'] === 200) {
