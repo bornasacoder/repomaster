@@ -775,15 +775,15 @@ public function register_post() {
       $this->email_confirmation($to_email, $subject, $msg);
 
       /* Attempt to create wallet */
-      $wallet_creation_result = $this->createWallet($user_id);
-      if ($wallet_creation_result['code'] === true) {
+      // $wallet_creation_result = $this->createWallet($user_id);
+      // if ($wallet_creation_result['code'] === true) {
           /* Get user data and send the response */
           $user_data = $this->common_model->getUserProfile("WHERE u.id=$user_id", "");
           $resp = ['code' => true, 'message' => 'Please follow the link sent to your registered email to verify your email address!', 'user_data' => $user_data[0]];
-      } else {
+      // } else {
           /* Handle wallet creation failure */
-          $resp = ['code' => false, 'message' => 'Failed to create wallet. Please try again later.'];
-      }
+          // $resp = ['code' => false, 'message' => 'Failed to create wallet. Please try again later.'];
+      // }
   } else {
       /* Handle user registration failure */
       $resp = ['code' => false, 'message' => 'Some error occurred, please try again.'];
