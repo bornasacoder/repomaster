@@ -2407,7 +2407,8 @@ if(empty($check_key)){
           $code= md5(substr(str_shuffle($permitted_chars), 0, 10));
           $to_email=$data['email'];
           $subject="Forget Password Link ";
-          $msg="Dear User, to complete your forget password process, plese follow this link  https://freedomcells.net/resetpassword/".$code;
+          $msg="Dear User, to complete your forget password process, plese follow this link  
+          https://api.victus.club/resetpassword/".$code;
           $this->email_confirmation($to_email,$subject,$msg);
           $this->common_model->updateRecords('users', array('forget_password_code'=> $code) , array('email' =>$data['email']));
           $get_userdata = $this->common_model->getSingleRecordById('users', array('email' => $data['email'] ) );
