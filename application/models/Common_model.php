@@ -120,8 +120,7 @@ class Common_model extends CI_Model
 		u.full_name,
 		u.email,
 		case when u.gender='Male' then 'Male' else 'Female' end as gender,
-		case when u.profile_pic is not null then concat('http://espsofttechnologies.com/
-			https://api.victus.club/uploads2/users_profile/', u.profile_pic) else 'https://cdn-icons-png.flaticon.com/512/6596/6596121.png' end as profile_pic,
+		case when u.profile_pic is not null then concat('https://api.victus.club/uploads2/users_profile/', u.profile_pic) else 'https://cdn-icons-png.flaticon.com/512/6596/6596121.png' end as profile_pic,
 		api_key,
 		is_enable_google_auth_code
 	from 
