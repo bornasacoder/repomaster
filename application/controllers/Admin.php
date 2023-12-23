@@ -4,7 +4,11 @@ ob_start();
 	if (!defined('BASEPATH'))
 		exit('No direct script access allowed');
 // $GLOBALS['url'] = 'https://freedomcells.net/freedomcell/';
-$GLOBALS['url'] = 'https://localhost/backend/';
+// $GLOBALS['url'] = 'https://localhost/backend/';
+$GLOBALS['url'] = 'https://api.victus.club/';
+
+
+
 
 
 class Admin extends CI_Controller 

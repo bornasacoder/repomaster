@@ -2,9 +2,11 @@
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: GET, OPTIONS");
 defined('BASEPATH') OR exit('No direct script access allowed');
+// $GLOBALS['url'] = 'http://localhost/backend/';
 $GLOBALS['url'] = 'https://api.victus.club/';
+
 $GLOBALS['app_url'] = '';
-$GLOBALS['ipfs_url'] = 'https://ipfs.io/ipfs/';
+$GLOBALS['ipfs_url'] = '';
 //$GLOBALS['url'] = 'https://espsofttechnologies.com/freedomcell/';
 //$GLOBALS['app_url'] = 'https://espsofttechnologies.com/freedom-cells-react/';
 
@@ -1064,7 +1066,8 @@ public function login_post() {
           //remove old image
            $recdata=$this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id']));
            if(!empty($recdata['background_image'])){
-           $file='uploads/users_profile/'.$recdata['background_image'];
+
+           $file='uploads2/users_profile/'.$recdata['background_image'];
            unlink($file);
           }
 
@@ -1073,29 +1076,29 @@ public function login_post() {
                 $fileType   = $_FILES["file"]["type"];
                 $imagename=time().$_FILES["file"]["name"];
                 $tnm=$_FILES["file"]["tmp_name"];
-                $dbpath = base_url().'uploads/users_profile/bg_'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/users_profile/bg_".$imagename);
+                $dbpath = base_url().'uploads2/users_profile/bg_'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/users_profile/bg_".$imagename);
                 $file='bg_'.$imagename;
 
                 switch($fileType) {
                 case "image/gif":
-                    $im = imagecreatefromgif("uploads/users_profile/bg_".$imagename); 
+                    $im = imagecreatefromgif("uploads2/users_profile/bg_".$imagename); 
                     break;
                 case "image/pjpeg":
                 case "image/jpeg":
                 case "image/jpg":
-                    $im = imagecreatefromjpeg("uploads/users_profile/bg_".$imagename); 
+                    $im = imagecreatefromjpeg("uploads2/users_profile/bg_".$imagename); 
                     break;
                 case "image/png":
                 case "image/x-png":
-                    $im = imagecreatefrompng("uploads/users_profile/bg_".$imagename); 
+                    $im = imagecreatefrompng("uploads2/users_profile/bg_".$imagename); 
                     break;
             }
             //$im = imagecreatefromjpeg('test.jpg');
             $size = min(imagesx($im), imagesy($im));
             $im2 = imagecrop($im, ['x' => $x, 'y' => $y, 'width' => $width, 'height' =>$height]);
             if ($im2 !== FALSE) {
-                imagepng($im2, "uploads/users_profile/bg_".$imagename);
+                imagepng($im2, "uploads2/users_profile/bg_".$imagename);
                 imagedestroy($im2);
             }
             imagedestroy($im);
@@ -1115,85 +1118,174 @@ public function login_post() {
         $this->response($resp);
   }
 
+  // public function profile_pic_update_post() {
+
+  //         //check api key
+  //          $path_of_file = "C:/xampp/htdocs/backend/uploads2/";
+  //     $api_key= $_POST['api_key'];
+  //     $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id'], 'api_key'=>$api_key));
+  //     if(empty($check_key)){
+  //         $resp = array('code' => false, 'message' => 'Api key not matched');
+  //         $this->response($resp);
+  //     }
+  //         $x=$_POST['x'];
+  //         $y=$_POST['y'];
+  //         $width=$_POST['width'];
+  //         $height=$_POST['height'];
+  //         $file=null;
+  //         if(!isset($_FILES["profile_pic"]['name'])) {
+  //           $resp = array('code' => false, 'message' => 'FAILURE', 'response' => 'You must upload profile image');
+  //             $this->response($resp);
+  //         }
+                     
+  //         //remove old image
+  //          $recdata=$this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id']));
+  //          if(!empty($recdata['profile_pic'])){
+  //          $file='uploads2/users_profile/'.$recdata['profile_pic'];
+  //          unlink($file);
+  //         }
+
+  //          if(isset($_FILES["profile_pic"]['name']))
+  //           {
+  //               $fileType = $_FILES["profile_pic"]["type"];
+  //               $imagename=time().$_FILES["profile_pic"]["name"];
+  //               $tnm=$_FILES["profile_pic"]["tmp_name"];
+               
+  //               $dbpath = base_url().'uploads2/users_profile/pp_'.$imagename;
+  //               $flag=move_uploaded_file($tnm,"uploads2/users_profile/pp_".$imagename);
+  //               $file='pp_'.$imagename;
+               
+  //               switch($fileType) {
+  //               case "image/gif":
+  //                   $im = imagecreatefromgif("uploads2/users_profile/pp_".$imagename); 
+  //                   break;
+  //               case "image/pjpeg":
+  //               case "image/jpeg":
+  //               case "image/jpg":
+  //                   $im = imagecreatefromjpeg("uploads2/users_profile/pp_".$imagename); 
+  //                   break;
+  //               case "image/png":
+  //               case "image/x-png":
+  //                   // $im = imagecreatefrompng("uploads2/users_profile/pp_".$imagename); 
+  //                   $im = imagecreatefrompng($path_of_file.$imagename); 
+
+  //                   break;
+  //           }
+  //           //$im = imagecreatefromjpeg('test.jpg');
+  //           $size = min(imagesx($im), imagesy($im));
+  //           $im2 = imagecrop($im, ['x' => $x, 'y' => $y, 'width' => $width, 'height' =>$height]);
+  //           if ($im2 !== FALSE) {
+  //               imagepng($im2, "uploads/users_profile/pp_".$imagename);
+  //               imagedestroy($im2);
+  //           }
+  //           imagedestroy($im);
+
+  //           } 
+
+  //        $condition = array('id' => $_POST['user_id']);
+  //       $updateArr = array('profile_pic' => $file);
+  //       $post=$this->common_model->updateRecords('users', $updateArr, $condition);
+
+  //      if($post){
+  //         $recdata=$this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id']));
+  //           $resp = array('code' => true, 'message' => 'SUCCESS', 'response' => 'Profile pic updated successfully','recdata'=>$recdata['profile_pic']);
+  //       } else {
+  //           $resp = array('code' => false, 'message' => 'FAILURE', 'response' => 'Not Posted');
+  //       }
+  //       $this->response($resp);
+  // }
+
   public function profile_pic_update_post() {
 
-          //check api key
-      $api_key= $_POST['api_key'];
-      $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id'], 'api_key'=>$api_key));
-      if(empty($check_key)){
-          $resp = array('code' => false, 'message' => 'Api key not matched');
-          $this->response($resp);
-      }
-          $x=$_POST['x'];
-          $y=$_POST['y'];
-          $width=$_POST['width'];
-          $height=$_POST['height'];
-          $file=null;
-          if(!isset($_FILES["profile_pic"]['name'])) {
-            $resp = array('code' => false, 'message' => 'FAILURE', 'response' => 'You must upload profile image');
-              $this->response($resp);
-          }
-                     
-          //remove old image
-           $recdata=$this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id']));
-           if(!empty($recdata['profile_pic'])){
-           $file='uploads/users_profile/'.$recdata['profile_pic'];
-           unlink($file);
-          }
-
-           if(isset($_FILES["profile_pic"]['name']))
-            {
-                $fileType = $_FILES["profile_pic"]["type"];
-                $imagename=time().$_FILES["profile_pic"]["name"];
-                $tnm=$_FILES["profile_pic"]["tmp_name"];
-                $dbpath = base_url().'uploads/users_profile/pp_'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/users_profile/pp_".$imagename);
-                $file='pp_'.$imagename;
-                
-                switch($fileType) {
-                case "image/gif":
-                    $im = imagecreatefromgif("uploads/users_profile/pp_".$imagename); 
-                    break;
-                case "image/pjpeg":
-                case "image/jpeg":
-                case "image/jpg":
-                    $im = imagecreatefromjpeg("uploads/users_profile/pp_".$imagename); 
-                    break;
-                case "image/png":
-                case "image/x-png":
-                    $im = imagecreatefrompng("uploads/users_profile/pp_".$imagename); 
-                    break;
-            }
-            //$im = imagecreatefromjpeg('test.jpg');
-            $size = min(imagesx($im), imagesy($im));
-            $im2 = imagecrop($im, ['x' => $x, 'y' => $y, 'width' => $width, 'height' =>$height]);
-            if ($im2 !== FALSE) {
-                imagepng($im2, "uploads/users_profile/pp_".$imagename);
-                imagedestroy($im2);
-            }
-            imagedestroy($im);
-
-            } 
-
-         $condition = array('id' => $_POST['user_id']);
-        $updateArr = array('profile_pic' => $file);
-        $post=$this->common_model->updateRecords('users', $updateArr, $condition);
-
-       if($post){
-          $recdata=$this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id']));
-            $resp = array('code' => true, 'message' => 'SUCCESS', 'response' => 'Profile pic updated successfully','recdata'=>$recdata['profile_pic']);
-        } else {
-            $resp = array('code' => false, 'message' => 'FAILURE', 'response' => 'Not Posted');
-        }
+    //check api key
+     $path_of_file = "C:/xampp/htdocs/backend/uploads2/users_profile/";
+$api_key= $_POST['api_key'];
+$check_key = $this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id'], 'api_key'=>$api_key));
+if(empty($check_key)){
+    $resp = array('code' => false, 'message' => 'Api key not matched');
+    $this->response($resp);
+}
+    $x=$_POST['x'];
+    $y=$_POST['y'];
+    $width=$_POST['width'];
+    $height=$_POST['height'];
+    $file=null;
+    if(!isset($_FILES["profile_pic"]['name'])) {
+      $resp = array('code' => false, 'message' => 'FAILURE', 'response' => 'You must upload profile image');
         $this->response($resp);
+    }
+               
+    //remove old image
+     $recdata=$this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id']));
+     if(!empty($recdata['profile_pic'])){
+     $file=$path_of_file.$recdata['profile_pic'];
+     unlink($file);
+    }
+
+     if(isset($_FILES["profile_pic"]['name']))
+      {
+          $fileType = $_FILES["profile_pic"]["type"];
+          $imagename=time().$_FILES["profile_pic"]["name"];
+          $tnm=$_FILES["profile_pic"]["tmp_name"];
+         
+          $dbpath = base_url().'uploads2/users_profile/pp_'.$imagename;
+          $flag=move_uploaded_file($tnm,"uploads2/users_profile/pp_".$imagename);
+          $file='pp_'.$imagename;
+         
+          switch($fileType) {
+          case "image/gif":
+             // $im = imagecreatefromgif("uploads2/users_profile/pp_".$imagename); 
+              $im = imagecreatefromgif($path_of_file.$file); 
+              break;
+          case "image/pjpeg":
+          case "image/jpeg":
+          case "image/jpg":
+             // $im = imagecreatefromjpeg("uploads2/users_profile/pp_".$imagename); 
+                $im = imagecreatefromjpeg($path_of_file.$file); 
+              break;
+          case "image/png":
+          case "image/x-png":
+              // $im = imagecreatefrompng("uploads2/users_profile/pp_".$imagename); 
+              $im = imagecreatefrompng($path_of_file.$file); 
+
+              break;
+      }
+      //$im = imagecreatefromjpeg('test.jpg');
+      $size = min(imagesx($im), imagesy($im));
+      $im2 = imagecrop($im, ['x' => $x, 'y' => $y, 'width' => $width, 'height' =>$height]);
+      if ($im2 !== FALSE) {
+        //  imagepng($im2, "uploads/users_profile/pp_".$imagename);
+            $im = imagecreatefrompng($path_of_file.$file); 
+          imagedestroy($im2);
+      }
+      imagedestroy($im);
+
+      } 
+
+   $condition = array('id' => $_POST['user_id']);
+  $updateArr = array('profile_pic' => $file);
+  $post=$this->common_model->updateRecords('users', $updateArr, $condition);
+
+ if($post){
+    $recdata=$this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id']));
+      $resp = array('code' => true, 'message' => 'SUCCESS', 'response' => 'Profile pic updated successfully','recdata'=>$recdata['profile_pic']);
+  } else {
+      $resp = array('code' => false, 'message' => 'FAILURE', 'response' => 'Not Posted');
   }
+  $this->response($resp);
+}
 
 
   public function add_post_post() {
+   
+    $data = $this->input->post();
+ 
+  
 
           //check api key
-      $api_key= $_POST['api_key'];
-      $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id'], 'api_key'=>$api_key));
+      // $api_key= $_POST['api_key'];
+      // $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id'], 'api_key'=>$api_key));
+      $check_key = $this->common_model->getSingleRecordById("users", array('id' => $data['user_id'], 'api_key' => $data['api_key']));
       if(empty($check_key)){
           $resp = array('code' => false, 'message' => 'Api key not matched');
           $this->response($resp);
@@ -1210,39 +1302,89 @@ public function login_post() {
         //       $resp = array('code' => false, 'message' => 'YOU_HAVE_MISSED_A_PARAMETER_' . strtoupper($chk_error['param']));
         //       $this->response($resp);
         //   }
-          $group_id=null;
-          $file=null;
-          $file_type=null;
-          $filepath=null;
+          // $group_id=null;
+          // $file=null;
+          // $file_type=null;
+          // $filepath=null;
 
-          if(isset($_POST['group_id'])) {
+          $group_id = isset($data['group_id']) ? $data['group_id'] : null;
+          $file_path = '';
+      
+         
+    //if (!empty($_FILES["file"]["name"])) {
+   // $hash_response = $this->ipfs_upload($_FILES['file']['tmp_name']);
+    //$hash = json_decode($hash_response);
 
-            $group_id=$_POST['group_id'];
-          }
-          echo $group_id;
-           if(!empty($_FILES["file"]['name'])) 
-            {
+    // Log the entire response for debugging purposes
+    //error_log('IPFS Upload Response: ' . print_r($hash, true));
 
-              $hash=$this->ipfs_upload($_FILES['file']['tmp_name']);
-              $hash=json_decode($hash);
-              print_r($hash);
-              //$filepath=$hash->IpfsHash.str_replace('/tmp','',$_FILES['file']['tmp_name']);
-                $filepath=$hash->result->hash;
-                $imagename=time().$_FILES["file"]["name"];
-                $tnm=$_FILES["file"]["tmp_name"];
-                $dbpath = base_url().'uploads/'.$imagename;
-                //$flag=move_uploaded_file($tnm,"uploads/".$imagename);
-                $file=$imagename;
-                $file_type=$_POST['file_type'];
-                // $hash=$this->ipfs_upload($_FILES["file"]["tmp_name"]);
-                // print_r($hash);die;
-            } 
+   // if ($hash && is_object($hash) && isset($hash->result) && isset($hash->result->hash)) {
+        // Process the expected structure
+        // $file_path = $hash->result->hash;
+  //  } else {
+        // Log unexpected response structure
+        // error_log('Unexpected response structure from IPFS: ' . print_r($hash, true));
 
-          $dataArray = array('group_id' => $group_id, 'user_id' => $_POST['user_id'], 'message' => $_POST['message'],'file' => $filepath, 'file_type' => $file_type,'ip'=>$_SERVER['REMOTE_ADDR']);
-        $post= $this->common_model->addRecords("post", $dataArray);
+        // Handle unexpected response or error from ipfs_upload
+        //$resp = array('code' => false, 'message' => 'Error in ipfs_upload response', 'details' => $hash);
+        //$this->response($resp);
+    //}
+//}
+        // new file upload code
+        if(isset($_FILES['file']['name']) && !empty($_FILES["file"]["name"])) 
+                        {
+                          $file_path = 'uploads2'; // folder name
+                            $config['allowed_types'] = '*';   // * is indicated all type
+                            //$config['max_size'] = 1024 * 8;
+                            $config['encrypt_name'] = TRUE;    
+                            $config['upload_path'] = $file_path;
+                            $this->load->library('upload', $config);
+                            $this->upload->initialize($config);
+                            if ($this->upload->do_upload('file')) 
+                            {
+                                $file_data = $this->upload->data();
+                                $filename = $file_data['file_name']; // filename with extention e.g. abc.png
+                                $return_uploaded_file_path = base_url().'uploads2/' . $filename;
+                                
+                                //echo $return_uploaded_file_path;
+                                // below is output of the above echo 
+                                // http://localhost/aaa/upload2/735aa31bf474eaa0e2739c416342dcc5.jpeg
+                                 
+                                // you can return to your function this file url 
+                                $file_path = $return_uploaded_file_path;
+                            }
+                            else {
+                                // file upload error
+                                $error = array('error' => $this->upload->display_errors());
+                                //echo $error['error']; die; // if file upload error then error show and script is stopped;
+
+                                $resp = array('code' => false, 'message' => $error['error'], 'details' => '');
+                                 $this->response($resp);
+
+                            } 
+                        }
+                        else {
+                          // fil not select or file is blank
+                          $file_path ="";
+                        }
+                        // new file uploads ends
+
+        $dataArray = array(
+          'group_id' => $group_id,
+          'user_id' => $data['user_id'],
+          'message' => $data['message'],
+          'file' => $file_path,
+          'file_type' => $data['file_type'],
+          'ip' => $_SERVER['REMOTE_ADDR']
+      );
+
+       // print_R($dataArray); die;
+  
+      $post = $this->common_model->addRecords("post", $dataArray);
+  
        if($post){
-        if(!empty($_POST['hashtag'])) {
-          $hash=explode(',', $_POST['hashtag']);
+        if(!empty($data['hashtag'])) {
+          $hash=explode(',', $data['hashtag']);
           foreach ($hash as $value) {
           $dataArray = array('post_id' => $post,'hashtag' => trim($value),'ip'=>$_SERVER['REMOTE_ADDR']);
           $this->common_model->addRecords("post_hashtag", $dataArray);
@@ -1250,8 +1392,8 @@ public function login_post() {
           
         } 
 
-        if(!empty($_POST['nsfw'])) {
-          $hash=explode(',', $_POST['nsfw']);
+        if(!empty($data['nsfw'])) {
+          $hash=explode(',', $data['nsfw']);
           foreach ($hash as $value) {
           $dataArray = array('post_id' => $post,'nsfw' => $value,'ip'=>$_SERVER['REMOTE_ADDR']);
           $this->common_model->addRecords("post_nsfw", $dataArray);
@@ -1286,6 +1428,7 @@ public function login_post() {
   }
 
 
+
   public function group_chat_post() {
 
           //check api key
@@ -1308,8 +1451,8 @@ public function login_post() {
             {
                 $imagename=time().$_FILES["file"]["name"];
                 $tnm=$_FILES["file"]["tmp_name"];
-                $dbpath = base_url().'uploads/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/".$imagename);
+                $dbpath = base_url().'uploads2/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/".$imagename);
                 $file=$imagename;
                 $file_type=$_POST['file_type'];
             } 
@@ -1487,7 +1630,7 @@ public function login_post() {
           $user_id=$data['user_id'];
           $url=$GLOBALS['url'];
           $group_chat_id=$data['group_chat_id'];
-          $query="SELECT c.id as chat_id,u.id,u.full_name, c.message,c.file,concat('".$url."','uploads/',c.file) as file,file_type,case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as avatar,get_duration(c.datetime) as duration,
+          $query="SELECT c.id as chat_id,u.id,u.full_name, c.message,c.file,concat('".$url."','uploads2/',c.file) as file,file_type,case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as avatar,get_duration(c.datetime) as duration,
           get_group_chat_like(c.id) as like_count,
           get_group_chat_dislike(c.id) as dislike_count,
           case when gcl.id is null then 0 else 1 end as user_like,
@@ -1505,7 +1648,7 @@ public function login_post() {
             $allcmnt=array();
             foreach ($recdata as $value) {
               $group_chat_id=$value['chat_id'];
-              $query="SELECT c.id as chat_reply_id,u.id,u.full_name, c.message,c.file,concat('".$url."','uploads/',c.file) as file,file_type,case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as avatar,get_duration(c.datetime) as duration FROM users as u INNER JOIN group_chat_reply as c ON u.id=c.sender_id WHERE c.group_chat_id=$group_chat_id and c.is_deleted=0 ORDER BY c.id";
+              $query="SELECT c.id as chat_reply_id,u.id,u.full_name, c.message,c.file,concat('".$url."','uploads2/',c.file) as file,file_type,case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as avatar,get_duration(c.datetime) as duration FROM users as u INNER JOIN group_chat_reply as c ON u.id=c.sender_id WHERE c.group_chat_id=$group_chat_id and c.is_deleted=0 ORDER BY c.id";
               $c = $this->common_model->getArrayByQuery($query);
               $value['reply'] = $c;
               $allcmnt=$value;
@@ -1542,8 +1685,8 @@ public function login_post() {
             {
                 $imagename=time().$_FILES["file"]["name"];
                 $tnm=$_FILES["file"]["tmp_name"];
-                $dbpath = base_url().'uploads/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/".$imagename);
+                $dbpath = base_url().'uploads2/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/".$imagename);
                 $file=$imagename;
                 $file_type=$_POST['file_type'];
             } 
@@ -1787,8 +1930,8 @@ public function login_post() {
                 $filepath=$hash->result->hash;
                 $imagename=time().$_FILES["file"]["name"];
                 $tnm=$_FILES["file"]["tmp_name"];
-                $dbpath = base_url().'uploads/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/".$imagename);
+                $dbpath = base_url().'uploads2/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/".$imagename);
                 $file=$imagename;
                 $file_type=$_POST['file_type'];
             } 
@@ -1833,12 +1976,12 @@ public function login_post() {
               coalesce(g.group_name,'') as group_name,
               u.full_name,
               coalesce(p.file_type,'') as file_type,
-              case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
-              case when u.background_image is null then '".$url."uploads/users_profile/banner.jpg' else concat('".$url."','uploads/users_profile/',u.background_image) end as background_image,
+              case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
+              case when u.background_image is null then '".$url."uploads2/users_profile/banner.jpg' else concat('".$url."','uploads2/users_profile/',u.background_image) end as background_image,
               case when repost_id is null then p.message else p.repost_comment end as message,
               case when repost_id is null then coalesce(p.repost_comment,'') else p.message end as repost_comment,
               
-              case when p.file is null then '' else concat('".$url."','uploads/',p.file) end as file,
+              case when p.file is null then '' else concat('".$url."','uploads2/',p.file) end as file,
               get_hashtag(p.id) as hashtag,
               is_nsfw(p.id) as is_nsfw,
               get_nsfw(p.id) as nsfw,
@@ -1848,7 +1991,7 @@ public function login_post() {
               coalesce(ru.full_name,'') as repost_user,
               case when repost_datetime is null then '' else get_duration(repost_datetime) end as repost_duration,
               
-              case when ru.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',ru.profile_pic) end as repost_profile_pic,
+              case when ru.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',ru.profile_pic) end as repost_profile_pic,
               get_duration(p.datetime) as duration,
               get_likes(p.id) as like_count, 
               get_dislikes(p.id) as dislike_count,
@@ -1900,8 +2043,8 @@ public function login_post() {
             {
                 $imagename=time().$_FILES["file"]["name"];
                 $tnm=$_FILES["file"]["tmp_name"];
-                $dbpath = base_url().'uploads/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/".$imagename);
+                $dbpath = base_url().'uploads2/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/".$imagename);
                 $file=$imagename;
                 
             } 
@@ -1953,8 +2096,8 @@ public function login_post() {
             {
                 $imagename=time().$_FILES["file"]["name"];
                 $tnm=$_FILES["file"]["tmp_name"];
-                $dbpath = base_url().'uploads/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/".$imagename);
+                $dbpath = base_url().'uploads2/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/".$imagename);
                 $file=$imagename;
             } 
 
@@ -1985,8 +2128,8 @@ public function login_post() {
             {
                 $imagename=time().$_FILES["file"]["name"];
                 $tnm=$_FILES["file"]["tmp_name"];
-                $dbpath = base_url().'uploads/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/".$imagename);
+                $dbpath = base_url().'uploads2/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/".$imagename);
                 $file=$imagename;
             } 
 
@@ -2038,8 +2181,8 @@ public function login_post() {
             {
                 $imagename=time().$_FILES["file"]["name"];
                 $tnm=$_FILES["file"]["tmp_name"];
-                $dbpath = base_url().'uploads/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/".$imagename);
+                $dbpath = base_url().'uploads2/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/".$imagename);
                 $file=$imagename;
             } 
 
@@ -2380,7 +2523,7 @@ public function login_post() {
             $this->response($resp);
         }
          $api_key= $data['api_key'];
-      $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$data['user_id'], 'api_key'=>$api_key));
+      $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$data['user_id'], 'api_key'=>$data['api_key']));
       if(empty($check_key)){
           $resp = array('code' => false, 'message' => 'Api key not matched');
           $this->response($resp);
@@ -2395,8 +2538,8 @@ public function login_post() {
               coalesce(g.group_name,'') as group_name,
               u.full_name,
               coalesce(p.file_type,'') as file_type,
-              case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
-              case when u.background_image is null then '".$url."uploads/users_profile/banner.jpg' else concat('".$url."','uploads/users_profile/',u.background_image) end as background_image,
+              case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
+              case when u.background_image is null then '".$url."uploads2/users_profile/banner.jpg' else concat('".$url."','uploads2/users_profile/',u.background_image) end as background_image,
               case when repost_id is null then p.message else p.repost_comment end as message,
               case when repost_id is null then coalesce(p.repost_comment,'') else p.message end as repost_comment,
               
@@ -2410,7 +2553,7 @@ public function login_post() {
               coalesce(ru.full_name,'') as repost_user,
               case when repost_datetime is null then '' else get_duration(repost_datetime) end as repost_duration,
               
-              case when ru.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',ru.profile_pic) end as repost_profile_pic,
+              case when ru.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',ru.profile_pic) end as repost_profile_pic,
               get_duration(p.datetime) as duration,
               get_likes(p.id) as like_count, 
               get_dislikes(p.id) as dislike_count,
@@ -2439,9 +2582,9 @@ public function login_post() {
                 pc.id as post_comment_id,
                 pc.user_id,
                 u.full_name,
-                case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+                case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(comment,'') as comment,
-                case when pc.file is null then '' else concat('".$url."','uploads/',pc.file) end as file, 
+                case when pc.file is null then '' else concat('".$url."','uploads2/',pc.file) end as file, 
                 pc.file_type,
                 get_comment_reply(pc.id) as reply_count,
                 get_duration(pc.datetime) as duration  
@@ -2454,9 +2597,9 @@ public function login_post() {
                 pcr.id as post_comment_reply_id,
                 pcr.user_id,
                 u.full_name,
-                 case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+                 case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(reply,'') as reply,
-                case when pcr.file is null then '' else concat('".$url."','uploads/',pcr.file) end as file,
+                case when pcr.file is null then '' else concat('".$url."','uploads2/',pcr.file) end as file,
                 pcr.file_type,
                 get_duration(pcr.datetime) as duration  
                 from post_comment_reply as pcr left join users as u on u.id=pcr.user_id where pcr.post_comment_id=$post_comment_id and isdeleted=0 order by pcr.id";                
@@ -2512,8 +2655,8 @@ public function login_post() {
               p.user_id,
               u.full_name,
               coalesce(p.file_type,'') as file_type,
-              case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
-              case when u.background_image is null then '".$url."uploads/users_profile/banner.jpg' else concat('".$url."','uploads/users_profile/',u.background_image) end as background_image,
+              case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
+              case when u.background_image is null then '".$url."uploads2/users_profile/banner.jpg' else concat('".$url."','uploads2/users_profile/',u.background_image) end as background_image,
               case when repost_id is null then p.message else p.repost_comment end as message,
               case when repost_id is null then coalesce(p.repost_comment,'') else p.message end as repost_comment,
               case when p.file is null then '' else concat('".$ipfs_url."',p.file) end as file,
@@ -2548,7 +2691,7 @@ public function login_post() {
   }
 
 public function sujjested_channels_post() {
-       /* Check for required parameter */
+      //  /* Check for required parameter */
         $pdata = file_get_contents("php://input");
         $data = json_decode( $pdata,true );
         $object_info = $data;
@@ -2571,7 +2714,7 @@ public function sujjested_channels_post() {
             $query="SELECT 
           u.id as user_id,
           left(u.full_name,15) as full_name,
-          case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+          case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
          get_follower(u.id) as follower
          FROM users as u
          where u.id<>$user_id and u.id not in (select b.blocked_user_id from block as b where b.user_id=$user_id) and u.id not in (select b2.user_id from block as b2 where b2.blocked_user_id=$user_id) and u.id not in (select f.following_id from follow as f  where f.follower_id=$user_id) order by rand() limit 5";
@@ -2672,8 +2815,8 @@ public function sujjested_channels_post() {
               coalesce(g.group_name,'') as group_name,
               u.full_name,
               coalesce(p.file_type,'') as file_type,
-              case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
-              case when u.background_image is null then '".$url."uploads/users_profile/banner.jpg' else concat('".$url."','uploads/users_profile/',u.background_image) end as background_image,
+              case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
+              case when u.background_image is null then '".$url."uploads2/users_profile/banner.jpg' else concat('".$url."','uploads2/users_profile/',u.background_image) end as background_image,
               case when repost_id is null then p.message else p.repost_comment end as message,
               case when repost_id is null then coalesce(p.repost_comment,'') else p.message end as repost_comment,
               case when p.file is null then '' else concat('".$ipfs_url."',p.file) end as file,
@@ -2686,7 +2829,7 @@ public function sujjested_channels_post() {
               coalesce(ru.full_name,'') as repost_user,
               case when repost_datetime is null then '' else get_duration(repost_datetime) end as repost_duration,
               
-              case when ru.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',ru.profile_pic) end as repost_profile_pic,
+              case when ru.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',ru.profile_pic) end as repost_profile_pic,
               get_duration(p.datetime) as duration,
               get_likes(p.id) as like_count, 
               get_dislikes(p.id) as dislike_count,
@@ -2713,9 +2856,9 @@ public function sujjested_channels_post() {
                 pc.id as post_comment_id,
                 pc.user_id,
                 u.full_name,
-                case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+                case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(comment,'') as comment,
-                case when pc.file is null then '' else concat('".$url."','uploads/',pc.file) end as file,
+                case when pc.file is null then '' else concat('".$url."','uploads2/',pc.file) end as file,
                 pc.file_type, 
                 get_comment_reply(pc.id) as reply_count,
                 get_duration(pc.datetime) as duration  
@@ -2728,9 +2871,9 @@ public function sujjested_channels_post() {
                 pcr.id as post_comment_reply_id,
                 pcr.user_id,
                 u.full_name,
-                case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+                case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(reply,'') as reply,
-                case when pcr.file is null then '' else concat('".$url."','uploads/',pcr.file) end as file,
+                case when pcr.file is null then '' else concat('".$url."','uploads2/',pcr.file) end as file,
                 pcr.file_type,
                 get_duration(pcr.datetime) as duration  
                 from post_comment_reply as pcr left join users as u on u.id=pcr.user_id where pcr.post_comment_id=$post_comment_id and isdeleted=0 order by pcr.id";                
@@ -2789,8 +2932,8 @@ public function hashtag_timeline_post() {
               coalesce(g.group_name,'') as group_name,
               u.full_name,
               coalesce(p.file_type,'') as file_type,
-              case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
-              case when u.background_image is null then '".$url."uploads/users_profile/banner.jpg' else concat('".$url."','uploads/users_profile/',u.background_image) end as background_image,
+              case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
+              case when u.background_image is null then '".$url."uploads2/users_profile/banner.jpg' else concat('".$url."','uploads2/users_profile/',u.background_image) end as background_image,
               case when repost_id is null then p.message else p.repost_comment end as message,
               case when repost_id is null then coalesce(p.repost_comment,'') else p.message end as repost_comment,
               case when p.file is null then '' else concat('".$ipfs_url."',p.file) end as file,
@@ -2803,7 +2946,7 @@ public function hashtag_timeline_post() {
               coalesce(ru.full_name,'') as repost_user,
               case when repost_datetime is null then '' else get_duration(repost_datetime) end as repost_duration,
               
-              case when ru.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',ru.profile_pic) end as repost_profile_pic,
+              case when ru.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',ru.profile_pic) end as repost_profile_pic,
               get_duration(p.datetime) as duration,
               get_likes(p.id) as like_count, 
               get_dislikes(p.id) as dislike_count,
@@ -2830,9 +2973,9 @@ public function hashtag_timeline_post() {
                 pc.id as post_comment_id,
                 pc.user_id,
                 u.full_name,
-                case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+                case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(comment,'') as comment,
-                case when pc.file is null then '' else concat('".$url."','uploads/',pc.file) end as file,
+                case when pc.file is null then '' else concat('".$url."','uploads2/',pc.file) end as file,
                 pc.file_type, 
                 get_comment_reply(pc.id) as reply_count,
                 get_duration(pc.datetime) as duration  
@@ -2845,9 +2988,9 @@ public function hashtag_timeline_post() {
                 pcr.id as post_comment_reply_id,
                 pcr.user_id,
                 u.full_name,
-                case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+                case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(reply,'') as reply,
-                case when pcr.file is null then '' else concat('".$url."','uploads/',pcr.file) end as file,
+                case when pcr.file is null then '' else concat('".$url."','uploads2/',pcr.file) end as file,
                 pcr.file_type,
                 get_duration(pcr.datetime) as duration  
                 from post_comment_reply as pcr left join users as u on u.id=pcr.user_id where pcr.post_comment_id=$post_comment_id and isdeleted=0 order by pcr.id";                
@@ -2872,8 +3015,7 @@ public function hashtag_timeline_post() {
                $resp = array('code' => false, 'message' => array('error' => 'FAILURE', 'error_label' => 'Some error occured'));
             }
             $this->response($resp);
-  }
-
+          }
 
 
   /** Profile Api */
@@ -2897,7 +3039,7 @@ public function hashtag_timeline_post() {
           $this->response($resp);
       }
             $url=$GLOBALS['url'];
-            $ipfs_url=$GLOBALS['ipfs_url'];
+            // $ipfs_url=$GLOBALS['ipfs_url'];
             $user_id=$data['user_id'];
             $group_id=$data['group_id'];
             $query="SELECT
@@ -2907,7 +3049,7 @@ public function hashtag_timeline_post() {
               coalesce(g.id,'') as group_id,
               coalesce(g.group_name,'') as group_name,
               u.full_name,
-              case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+              case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
               case when repost_id is null then p.message else p.repost_comment end as message,
               case when repost_id is null then coalesce(p.repost_comment,'') else p.message end as repost_comment,
               get_hashtag(p.id) as hashtag,
@@ -2942,9 +3084,9 @@ public function hashtag_timeline_post() {
                 pc.id as post_comment_id,
                 pc.user_id,
                 u.full_name,
-                case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."uploads/users_profile/',u.profile_pic) end as profile_pic,
+                case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(comment,'') as comment,
-                case when pc.file is null then '' else concat('".$url."uploads/',pc.file) end as file,
+                case when pc.file is null then '' else concat('".$url."uploads2/',pc.file) end as file,
                 pc.file_type, 
                 get_comment_reply(pc.id) as reply_count,
                 get_duration(pc.datetime) as duration  
@@ -2957,9 +3099,9 @@ public function hashtag_timeline_post() {
                 pcr.id as post_comment_reply_id,
                 pcr.user_id,
                 u.full_name,
-                case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."uploads/users_profile/',u.profile_pic) end as profile_pic,
+                case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(reply,'') as reply,
-                case when pcr.file is null then '' else concat('".$url."uploads/',pcr.file) end as file,
+                case when pcr.file is null then '' else concat('".$url."uploads2/',pcr.file) end as file,
                 pcr.file_type,
                 get_duration(pcr.datetime) as duration  
                 from post_comment_reply as pcr left join users as u on u.id=pcr.user_id where pcr.post_comment_id=$post_comment_id and isdeleted=0 order by pcr.id";                
@@ -3018,7 +3160,7 @@ public function hashtag_timeline_post() {
               coalesce(g.id,'') as group_id,
               coalesce(g.group_name,'') as group_name,
               u.full_name,
-              case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+              case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
               case when repost_id is null then p.message else p.repost_comment end as message,
               case when repost_id is null then coalesce(p.repost_comment,'') else p.message end as repost_comment,
               get_hashtag(p.id) as hashtag,
@@ -3054,9 +3196,9 @@ public function hashtag_timeline_post() {
                 pc.id as post_comment_id,
                 pc.user_id,
                 u.full_name,
-                case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."uploads/users_profile/',u.profile_pic) end as profile_pic,
+                case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(comment,'') as comment,
-                case when pc.file is null then '' else concat('".$url."uploads/',pc.file) end as file,
+                case when pc.file is null then '' else concat('".$url."uploads2/',pc.file) end as file,
                 pc.file_type, 
                 get_comment_reply(pc.id) as reply_count,
                 get_duration(pc.datetime) as duration  
@@ -3069,9 +3211,9 @@ public function hashtag_timeline_post() {
                 pcr.id as post_comment_reply_id,
                 pcr.user_id,
                 u.full_name,
-                case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."uploads/users_profile/',u.profile_pic) end as profile_pic,
+                case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."uploads2/users_profile/',u.profile_pic) end as profile_pic,
                 coalesce(reply,'') as reply,
-                case when pcr.file is null then '' else concat('".$url."uploads/',pcr.file) end as file,
+                case when pcr.file is null then '' else concat('".$url."uploads2/',pcr.file) end as file,
                 pcr.file_type,
                 get_duration(pcr.datetime) as duration  
                 from post_comment_reply as pcr left join users as u on u.id=pcr.user_id where pcr.post_comment_id=$post_comment_id and isdeleted=0 order by pcr.id";                
@@ -3338,7 +3480,7 @@ public function hashtag_timeline_post() {
 
          $user_id=$data['user_id'];
          $url=$GLOBALS['url'];
-         $query="SELECT b.id,b.user_id,b.blocked_user_id,u.full_name, case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,get_duration(b.datetime) as duration FROM block as b left join users as u on u.id=b.blocked_user_id where user_id=$user_id";
+         $query="SELECT b.id,b.user_id,b.blocked_user_id,u.full_name, case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,get_duration(b.datetime) as duration FROM block as b left join users as u on u.id=b.blocked_user_id where user_id=$user_id";
          $recdata= $this->common_model->getArrayByQuery($query);
         if($recdata){
         $resp = array('code' => true, 'message' => 'SUCCESS', 'recdata'  => $recdata);
@@ -3570,7 +3712,7 @@ public function hashtag_timeline_post() {
          $user_id=$data['user_id'];
          $view_user_id=$data['view_user_id'];
          $url=$GLOBALS['url'];
-         $query="SELECT f.id, u.id as user_id,u.full_name, 1 as is_following, case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,get_duration(f.datetime) as duration FROM follow as f left join users as u on u.id=f.following_id where follower_id=$view_user_id";
+         $query="SELECT f.id, u.id as user_id,u.full_name, 1 as is_following, case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,get_duration(f.datetime) as duration FROM follow as f left join users as u on u.id=f.following_id where follower_id=$view_user_id";
          $recdata= $this->common_model->getArrayByQuery($query);
         if($recdata){
         $resp = array('code' => true, 'message' => 'SUCCESS', 'recdata'  => $recdata);
@@ -3607,7 +3749,7 @@ public function hashtag_timeline_post() {
          $user_id=$data['user_id'];
          $view_user_id=$data['view_user_id'];
          $url=$GLOBALS['url'];
-         $query="SELECT f.id,u.id as user_id, u.full_name, case when u.profile_pic is null then '".$url."users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,get_duration(f.datetime) as duration FROM follow as f left join users as u on u.id=f.follower_id where following_id=$view_user_id and f.follower_id not in (select blocked_user_id from block where user_id=$view_user_id)";
+         $query="SELECT f.id,u.id as user_id, u.full_name, case when u.profile_pic is null then '".$url."users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,get_duration(f.datetime) as duration FROM follow as f left join users as u on u.id=f.follower_id where following_id=$view_user_id and f.follower_id not in (select blocked_user_id from block where user_id=$view_user_id)";
          $recdata= $this->common_model->getArrayByQuery($query);
         if($recdata){
         $resp = array('code' => true, 'message' => 'SUCCESS', 'recdata'  => $recdata);
@@ -3643,7 +3785,7 @@ public function hashtag_timeline_post() {
          $user_id=$data['user_id'];
          $view_user_id=$data['view_user_id'];
          $url=$GLOBALS['url'];
-         $query="SELECT u.id,u.full_name, case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic FROM  users as u  where  u.id in (select case when f.follower_id=$view_user_id then f.following_id else f.follower_id end as friend from follow as f inner join follow as f2 on f2.follower_id=f.following_id and f2.following_id=$view_user_id where f.follower_id=$view_user_id)";
+         $query="SELECT u.id,u.full_name, case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic FROM  users as u  where  u.id in (select case when f.follower_id=$view_user_id then f.following_id else f.follower_id end as friend from follow as f inner join follow as f2 on f2.follower_id=f.following_id and f2.following_id=$view_user_id where f.follower_id=$view_user_id)";
          
          $recdata= $this->common_model->getArrayByQuery($query);
         if($recdata){
@@ -3656,10 +3798,11 @@ public function hashtag_timeline_post() {
 
 
   public function group_create_post() {
-
+    $pdata = file_get_contents("php://input");
+    $data = json_decode($pdata, true);
          //check api key
-      $api_key= $_POST['api_key'];
-      $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id'], 'api_key'=>$api_key));
+      // $api_key= $_POST['api_key'];
+      $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$data['user_id'], 'api_key'=>$data['api_key']));
       if(empty($check_key)){
           $resp = array('code' => false, 'message' => 'Api key not matched');
           $this->response($resp);
@@ -3672,8 +3815,8 @@ public function hashtag_timeline_post() {
             {
                 $imagename=time().$_FILES["avatar"]["name"];
                 $tnm=$_FILES["avatar"]["tmp_name"];
-                $dbpath = base_url().'uploads/group_avatar/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/group_avatar/".$imagename);
+                $dbpath = base_url().'uploads2/group_avatar/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/group_avatar/".$imagename);
                 $avatar=$imagename;
             } 
 
@@ -3681,16 +3824,16 @@ public function hashtag_timeline_post() {
             {
                 $imagename=time().$_FILES["banner"]["name"];
                 $tnm=$_FILES["banner"]["tmp_name"];
-                $dbpath = base_url().'uploads/group_avatar/banner_'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/group_avatar/banner_".$imagename);
+                $dbpath = base_url().'uploads2/group_avatar/banner_'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/group_avatar/banner_".$imagename);
                 $banner='banner_'.$imagename;
             } 
            
-        $dataArray = array('user_id' => $_POST['user_id'],'group_name' => $_POST['group_name'], 'description' => $_POST['description'], 'is_closed_group' => $_POST['is_closed_group'],'avatar' => $avatar,'banner' => $banner,'ip'=>$_SERVER['REMOTE_ADDR']);
+        $dataArray = array('user_id' => $data['user_id'],'group_name' => $data['group_name'], 'description' => $data['description'], 'is_closed_group' => $data['is_closed_group'],'avatar' => $avatar,'banner' => $banner,'ip'=>$_SERVER['REMOTE_ADDR']);
         $post= $this->common_model->addRecords("groups", $dataArray);
         
        if($post){
-           $dataArray = array('member_id' => $_POST['user_id'],'group_id' => $post, 'isapproved' => 1,'approveddate' =>date('Y-m-d'),'isadmin' => 1,'isblocked' => 0,'ip'=>$_SERVER['REMOTE_ADDR']);
+           $dataArray = array('member_id' => $data['user_id'],'group_id' => $post, 'isapproved' => 1,'approveddate' =>date('Y-m-d'),'isadmin' => 1,'isblocked' => 0,'ip'=>$_SERVER['REMOTE_ADDR']);
         $this->common_model->addRecords("group_member", $dataArray);
 
     $recdata=$this->common_model->getSingleRecordById('groups',array('id' =>$post));
@@ -3704,9 +3847,10 @@ public function hashtag_timeline_post() {
 
   public function project_create_post() {
 
-         //check api key
-      $api_key= $_POST['api_key'];
-      $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$_POST['user_id'], 'api_key'=>$api_key));
+    $pdata = file_get_contents("php://input");
+    $data = json_decode($pdata, true);
+      // $api_key= $_POST['api_key'];
+      $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$data['user_id'], 'api_key'=>$data['api_key']));
       if(empty($check_key)){
           $resp = array('code' => false, 'message' => 'Api key not matched');
           $this->response($resp);
@@ -3719,8 +3863,8 @@ public function hashtag_timeline_post() {
             {
                 $imagename=time().$_FILES["avatar"]["name"];
                 $tnm=$_FILES["avatar"]["tmp_name"];
-                $dbpath = base_url().'uploads/group_avatar/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/group_avatar/".$imagename);
+                $dbpath = base_url().'uploads2/group_avatar/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/group_avatar/".$imagename);
                 $avatar=$imagename;
             } 
 
@@ -3728,26 +3872,26 @@ public function hashtag_timeline_post() {
             {
                 $imagename=time().$_FILES["banner"]["name"];
                 $tnm=$_FILES["banner"]["tmp_name"];
-                $dbpath = base_url().'uploads/group_avatar/banner_'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/group_avatar/banner_".$imagename);
+                $dbpath = base_url().'uploads2/group_avatar/banner_'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/group_avatar/banner_".$imagename);
                 $banner='banner_'.$imagename;
             } 
             if(isset($funding_target))
             {
-                $funding_target=$_POST['funding_target'];
+                $funding_target=$data['funding_target'];
             } 
             
             $days=null;
-            if(isset($_POST['days']))
+            if(isset($data['days']))
             {
-                $days=$_POST['days'];
+                $days=$data['days'];
             } 
 
-        $dataArray = array('user_id' => $_POST['user_id'],'group_name' => $_POST['group_name'], 'description' => $_POST['description'],'funding_target'=>$funding_target,'days'=>$days, 'is_project'=>1, 'is_closed_group' => $_POST['is_closed_group'],'avatar' => $avatar,'banner' => $banner,'ip'=>$_SERVER['REMOTE_ADDR']);
+        $dataArray = array('user_id' => $data['user_id'],'group_name' => $data['group_name'], 'description' => $data['description'],'funding_target'=>$data['funding_target'],'days'=>$data['days'], 'is_project'=>1, 'is_closed_group' => $data['is_closed_group'],'avatar' => $avatar,'banner' => $banner,'ip'=>$_SERVER['REMOTE_ADDR']);
         $post= $this->common_model->addRecords("groups", $dataArray);
         
        if($post){
-           $dataArray = array('member_id' => $_POST['user_id'],'group_id' => $post, 'isapproved' => 1,'approveddate' =>date('Y-m-d'),'isadmin' => 1,'isblocked' => 0,'ip'=>$_SERVER['REMOTE_ADDR']);
+           $dataArray = array('member_id' => $data['user_id'],'group_id' => $post, 'isapproved' => 1,'approveddate' =>date('Y-m-d'),'isadmin' => 1,'isblocked' => 0,'ip'=>$_SERVER['REMOTE_ADDR']);
         $this->common_model->addRecords("group_member", $dataArray);
 
     $recdata=$this->common_model->getSingleRecordById('groups',array('id' =>$post));
@@ -3789,8 +3933,8 @@ public function hashtag_timeline_post() {
             {
                 $imagename=time().$_FILES["avatar"]["name"];
                 $tnm=$_FILES["avatar"]["tmp_name"];
-                $dbpath = base_url().'uploads/group_avatar/'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/group_avatar/".$imagename);
+                $dbpath = base_url().'uploads2/group_avatar/'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/group_avatar/".$imagename);
                 $avatar=$imagename;
             } 
 
@@ -3798,8 +3942,8 @@ public function hashtag_timeline_post() {
             {
                 $imagename=time().$_FILES["banner"]["name"];
                 $tnm=$_FILES["banner"]["tmp_name"];
-                $dbpath = base_url().'uploads/group_avatar/banner_'.$imagename;
-                $flag=move_uploaded_file($tnm,"uploads/group_avatar/banner_".$imagename);
+                $dbpath = base_url().'uploads2/group_avatar/banner_'.$imagename;
+                $flag=move_uploaded_file($tnm,"uploads2/group_avatar/banner_".$imagename);
                 $banner='banner_'.$imagename;
             } 
 
@@ -3853,7 +3997,7 @@ public function hashtag_timeline_post() {
           g.id,g.
           user_id,
           g.group_name,
-          concat('".$url."uploads/group_avatar/',g.avatar) as vatar,
+          concat('".$url."uploads2/group_avatar/',g.avatar) as vatar,
           g.description,
           case when g.is_closed_group=0 then 'Public' else 'Private' end as type,
           count(gm.id) as member_count 
@@ -3917,8 +4061,8 @@ public function hashtag_timeline_post() {
           u.id,
           u.id as user_id,
           u.full_name, 
-          case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as avatar,
-          case when u.background_image is null then '".$url."uploads/users_profile/banner.jpg' else concat('".$url."uploads/users_profile/',u.background_image) end as background_image
+          case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as avatar,
+          case when u.background_image is null then '".$url."uploads2/users_profile/banner.jpg' else concat('".$url."uploads2/users_profile/',u.background_image) end as background_image
           FROM users as u 
           where u.id=$view_user_id";
          $recdata= $this->common_model->getArrayByQuery($query);
@@ -3960,7 +4104,7 @@ public function hashtag_timeline_post() {
           g.id,
           g.user_id,
           g.group_name,
-          concat('".$url."uploads/group_avatar/',g.avatar) as vatar,
+          concat('".$url."uploads2/group_avatar/',g.avatar) as vatar,
           g.description,
           case when gm.id is null then 'non_member' else 'member' end as is_member,
           case when g.is_closed_group=0 then 'Public' else 'Private' end as type,
@@ -4007,7 +4151,7 @@ public function hashtag_timeline_post() {
           g.id,g.
           user_id,
           g.group_name,
-          concat('".$url."uploads/group_avatar/',g.avatar) as avatar,
+          concat('".$url."uploads2/group_avatar/',g.avatar) as avatar,
           g.description,
           case when g.is_closed_group=0 then 'Public' else 'Private' end as type,
           count(gm.id) as member_count 
@@ -4055,7 +4199,7 @@ public function hashtag_timeline_post() {
           g.id,g.
           user_id,
           g.group_name,
-          concat('".$url."uploads/group_avatar/',g.avatar) as vatar,
+          concat('".$url."uploads2/group_avatar/',g.avatar) as vatar,
           g.description,
           case when g.is_closed_group=0 then 'Public' else 'Private' end as type,
           count(gm.id) as member_count,
@@ -4103,7 +4247,7 @@ public function hashtag_timeline_post() {
           g.id,g.
           user_id,
           g.group_name,
-          concat('".$url."uploads/group_avatar/',g.avatar) as vatar,
+          concat('".$url."uploads2/group_avatar/',g.avatar) as vatar,
           g.description,
           case when g.is_closed_group=0 then 'Public' else 'Private' end as type,
           count(gm.id) as member_count 
@@ -4401,8 +4545,8 @@ public function delete_voting_post() {
           g.id,g.
           user_id,
           g.group_name,
-          concat('".$url."uploads/group_avatar/',g.avatar) as avatar,
-          concat('".$url."uploads/group_avatar/',g.banner) as banner,
+          concat('".$url."uploads2/group_avatar/',g.avatar) as avatar,
+          concat('".$url."uploads2/group_avatar/',g.banner) as banner,
           g.description,
           case when g.is_closed_group=0 then 'Public' else 'Private' end as type,
           case when g.funding_target>0 then 1 else 0 end as if_funding_group,
@@ -4435,8 +4579,8 @@ public function delete_voting_post() {
           user_id,
           case when length(g.group_name)>25 then  concat(substring(g.group_name,1,25),'...')  else g.group_name end as short_group_name,
           g.group_name,
-          concat('".$url."uploads/group_avatar/',g.avatar) as avatar,
-          concat('".$url."uploads/group_avatar/',g.banner) as banner,
+          concat('".$url."uploads2/group_avatar/',g.avatar) as avatar,
+          concat('".$url."uploads2/group_avatar/',g.banner) as banner,
           case when length(g.description)>60 then  concat(substring(g.description,1,60),'...') else g.description end  as short_description,
           g.description,
           case when g.is_closed_group=0 then 'Public' else 'Private' end as type,
@@ -4487,8 +4631,8 @@ public function delete_voting_post() {
          $query="SELECT 
           u.id as user_id,
           u.full_name,
-          case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."uploads/users_profile/',u.profile_pic) end as profile_pic,
-          case when u.background_image is null then '".$url."uploads/users_profile/banner.jpg' else concat('".$url."uploads/users_profile/',u.background_image) end as background_image,
+          case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."uploads2/users_profile/',u.profile_pic) end as profile_pic,
+          case when u.background_image is null then '".$url."uploads2/users_profile/banner.jpg' else concat('".$url."uploads2/users_profile/',u.background_image) end as background_image,
           gm.isadmin,
           gm.isapproved,
           case when f.id is null then 0 else 1 end as is_following
@@ -4667,7 +4811,7 @@ public function delete_voting_post() {
           u.id as user_id,
           u.full_name,
           u.email,
-          case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."uploads/users_profile/',u.profile_pic) end as profile_pic
+          case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."uploads2/users_profile/',u.profile_pic) end as profile_pic
           FROM users u 
          where u.full_name like '%$search%' or u.email  like '%$search%' ";
          $recdata= $this->common_model->getArrayByQuery($query);
@@ -5622,8 +5766,8 @@ public function show_email_notification_post() {
           {
               $imagename=time().$_FILES["profile_pic"]["name"];
               $tnm=$_FILES["profile_pic"]["tmp_name"];
-              $dbpath = base_url().'uploads/users_profile/pp_'.$imagename;
-              $flag=move_uploaded_file($tnm,"uploads/users_profile/pp_".$imagename);
+              $dbpath = base_url().'uploads2/users_profile/pp_'.$imagename;
+              $flag=move_uploaded_file($tnm,"uploads2/users_profile/pp_".$imagename);
               $file='pp_'.$imagename;
           }
          $user= $this->common_model->getSingleRecordById('users',array('email_auth_code'=>$_POST['code']));
@@ -5939,7 +6083,7 @@ public function sujjested_hashtag_post() {
           u.full_name as name,
           u.full_name as fullname,
           u.email,
-          case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic
+          case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic
           from users as u where u.full_name like '%$search%' or u.email like '%$search%'
           union all 
           select 
@@ -5948,7 +6092,7 @@ public function sujjested_hashtag_post() {
             substring(group_name,1,20) as name,
             group_name as fullname,
             '' as email,
-            concat('".$url."uploads/group_avatar/',g.avatar) as profile_pic
+            concat('".$url."uploads2/group_avatar/',g.avatar) as profile_pic
             from `groups` as g where g.group_name like '%$search%' or g.description like '%$search%' and g.is_closed_group=0 and g.isdeleted=0
 
           ";
@@ -6464,7 +6608,7 @@ public function notification_list_post()
         get_user_fullname(n.recipient_id) as recipient,
         n.sender_id,
         get_user_fullname(n.sender_id) as sender,
-        case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as profile_pic,
+        case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as profile_pic,
         n.title,
         n.message,
         coalesce(n.post_id,'') as post_id,
@@ -6600,7 +6744,7 @@ public function notification_read_post()
           $this->response($resp);
       }
         $url=$GLOBALS['url'];
-       $query="SELECT u.id,u.full_name, case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as avatar,case when u.background_image is null then '".$url."uploads/users_profile/banner.jpg' else concat('".$url."','uploads/users_profile/',u.background_image) end as background_image FROM users as u where u.full_name LIKE '$user_name%' || u.email LIKE '$user_name%'  ";
+       $query="SELECT u.id,u.full_name, case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as avatar,case when u.background_image is null then '".$url."uploads2/users_profile/banner.jpg' else concat('".$url."','uploads2/users_profile/',u.background_image) end as background_image FROM users as u where u.full_name LIKE '$user_name%' || u.email LIKE '$user_name%'  ";
        
          $recdata= $this->common_model->getArrayByQuery($query);
       if(!empty($recdata)){        
@@ -6666,7 +6810,7 @@ public function notification_read_post()
           $resp = array('code' => false, 'message' => 'Api key not matched');
           $this->response($resp);
       }
-      $sql ="SELECT c.id as chat_id,c.open_chat_box,u.id,u.full_name, case when u.profile_pic is null then '".$url."uploads/users_profile/avatar.jpg' else concat('".$url."','uploads/users_profile/',u.profile_pic) end as avatar FROM users as u INNER JOIN current_chat as c ON u.id=c.friend_id WHERE c.user_id=$user_id AND u.id !=$user_id ORDER BY c.id DESC";
+      $sql ="SELECT c.id as chat_id,c.open_chat_box,u.id,u.full_name, case when u.profile_pic is null then '".$url."uploads2/users_profile/avatar.jpg' else concat('".$url."','uploads2/users_profile/',u.profile_pic) end as avatar FROM users as u INNER JOIN current_chat as c ON u.id=c.friend_id WHERE c.user_id=$user_id AND u.id !=$user_id ORDER BY c.id DESC";
       $chat_user = $this->common_model->getArrayByQuery($sql);
       foreach ($chat_user as $v) {
      $blocked_chat_by=0;
