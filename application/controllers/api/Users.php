@@ -3040,7 +3040,7 @@ public function hashtag_timeline_post() {
           $this->response($resp);
       }
             $url=$GLOBALS['url'];
-            // $ipfs_url=$GLOBALS['ipfs_url'];
+            $ipfs_url=$GLOBALS['ipfs_url'];
             $user_id=$data['user_id'];
             $group_id=$data['group_id'];
             $query="SELECT
@@ -3799,8 +3799,9 @@ public function hashtag_timeline_post() {
 
 
   public function group_create_post() {
-    $pdata = file_get_contents("php://input");
-    $data = json_decode($pdata, true);
+    // $pdata = file_get_contents("php://input");
+     $data = $this->input->post();
+    // $data = json_decode($pdata, true);
          //check api key
       // $api_key= $_POST['api_key'];
       $check_key = $this->common_model->getSingleRecordById('users',array('id' =>$data['user_id'], 'api_key'=>$data['api_key']));
