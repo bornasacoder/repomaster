@@ -933,16 +933,24 @@ abstract class REST_Controller extends CI_Controller {
         $method = NULL;
 
         // Determine whether the 'enable_emulate_request' setting is enabled
-        if ($this->config->item('enable_emulate_request') === TRUE)
-        {
+        if ($this->config->item('enable_emulate_request') === TRUE) {
             $method = $this->input->post('_method');
-            if ($method === NULL)
-            {
+        
+            // Check if $method is NULL or empty string
+            if ($method === NULL || $method === '') {
                 $method = $this->input->server('HTTP_X_HTTP_METHOD_OVERRIDE');
             }
-
-            $method = strtolower($method);
+        
+            // Ensure $method is not NULL before using strtolower()
+            if ($method !== NULL) {
+                $method = strtolower($method);
+            } else {
+                // Handle the case when $method is NULL (if needed)
+                // For example, set a default method or handle according to your application's logic
+                $method = 'default_method'; // Set a default method name or value
+            }
         }
+        
 
         if (empty($method))
         {
